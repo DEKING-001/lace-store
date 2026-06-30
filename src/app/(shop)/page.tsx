@@ -47,7 +47,7 @@ export default function HomePage() {
       </section>
 
       {/* Trust Bar */}
-      <section className="bg-white border-b border-border">
+      <section className="bg-white dark:bg-gray-900 border-b border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-border">
             <div className="flex items-center gap-4 py-5 md:justify-center">
@@ -105,7 +105,7 @@ export default function HomePage() {
               <Link
                 key={cat.slug}
                 href={`/shop?category=${cat.slug}`}
-                className="group relative bg-white rounded-2xl border border-border p-6 sm:p-8 hover:border-accent hover:shadow-lg transition-all duration-300 text-center overflow-hidden"
+                className="group relative bg-white dark:bg-gray-900 rounded-2xl border border-border p-6 sm:p-8 hover:border-accent hover:shadow-lg transition-all duration-300 text-center overflow-hidden"
               >
                 <div className="absolute inset-0 bg-gradient-to-b from-accent/0 to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 <span className="text-4xl sm:text-5xl block mb-4 relative">{cat.emoji}</span>

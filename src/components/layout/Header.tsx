@@ -2,13 +2,15 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { ShoppingBag, Menu, X } from "lucide-react";
+import { ShoppingBag, Menu, X, Sun, Moon } from "lucide-react";
 import { useCartStore } from "@/lib/cart";
+import { useTheme } from "@/lib/theme";
 
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const itemCount = useCartStore((state) => state.getItemCount());
+  const { theme, toggle } = useTheme();
 
   useEffect(() => setMounted(true), []);
 
@@ -21,7 +23,7 @@ export default function Header() {
   ];
 
   return (
-    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-border">
+    <header className="sticky top-0 z-50 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm border-b border-border">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 sm:h-20">
           {/* Logo */}
@@ -48,6 +50,19 @@ export default function Header() {
 
           {/* Right side */}
           <div className="flex items-center gap-4">
+            {/* Theme toggle */}
+            <button
+              onClick={toggle}
+              className="p-2 text-foreground/70 hover:text-primary transition-colors rounded-lg hover:bg-muted"
+              title={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+            >
+              {mounted && theme === "dark" ? (
+                <Sun className="w-5 h-5" />
+              ) : (
+                <Moon className="w-5 h-5" />
+              )}
+            </button>
+
             <Link
               href="/cart"
               className="relative p-2 text-foreground/70 hover:text-primary transition-colors"
@@ -73,7 +88,7 @@ export default function Header() {
 
       {/* Mobile Nav */}
       {mobileOpen && (
-        <div className="md:hidden border-t border-border bg-white">
+        <div className="md:hidden border-t border-border bg-white dark:bg-gray-900">
           <nav className="px-4 py-4 space-y-2">
             {navLinks.map((link) => (
               <Link

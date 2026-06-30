@@ -14,6 +14,8 @@ import {
   Boxes,
   ArrowLeft,
   LogOut,
+  Sun,
+  Moon,
 } from "lucide-react";
 
 const sidebarLinks = [
@@ -36,6 +38,8 @@ export default function AdminLayout({
   const router = useRouter();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [theme, setTheme] = useState<"light" | "dark">("light");
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const isLoginPage = pathname === "/admin/login";
 
@@ -53,6 +57,23 @@ export default function AdminLayout({
     }
     setLoading(false);
   }, [router, isLoginPage]);
+
+  useEffect(() => {
+    const stored = localStorage.getItem("theme") as "light" | "dark" | null;
+    if (stored) setTheme(stored);
+    const observer = new MutationObserver(() => {
+      setTheme(document.documentElement.classList.contains("dark") ? "dark" : "light");
+    });
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+    return () => observer.disconnect();
+  }, []);
+
+  const toggleTheme = () => {
+    document.documentElement.classList.toggle("dark");
+    const newTheme = document.documentElement.classList.contains("dark") ? "dark" : "light";
+    localStorage.setItem("theme", newTheme);
+    setTheme(newTheme);
+  };
 
   const handleLogout = () => {
     localStorage.removeItem("admin_auth");
@@ -78,7 +99,7 @@ export default function AdminLayout({
   return (
     <div className="flex min-h-screen bg-muted/30">
       {/* Sidebar */}
-      <aside className="w-64 bg-white border-r border-border flex flex-col">
+      <aside className="w-64 bg-white dark:bg-gray-900 border-r border-border flex flex-col max-lg:hidden">
         <div className="p-4 border-b border-border">
           <img
             src="/logo.jpeg"
@@ -113,8 +134,15 @@ export default function AdminLayout({
 
         <div className="p-3 border-t border-border space-y-1">
           <button
+            onClick={toggleTheme}
+            className="flex items-center gap-2 px-3 py-2 text-sm text-foreground/60 hover:text-primary rounded-lg hover:bg-muted transition-colors w-full"
+          >
+            {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+            {theme === "dark" ? "Light Mode" : "Dark Mode"}
+          </button>
+          <button
             onClick={handleLogout}
-            className="flex items-center gap-2 px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors w-full"
+            className="flex items-center gap-2 px-3 py-2 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors w-full"
           >
             <LogOut className="w-4 h-4" />
             Logout
@@ -129,8 +157,60 @@ export default function AdminLayout({
         </div>
       </aside>
 
+      {/* Mobile top bar */}
+      <div className="lg:hidden fixed top-0 left-0 right-0 z-50 bg-white dark:bg-gray-900 border-b border-border px-4 py-3 flex items-center justify-between">
+        <button onClick={() => setSidebarOpen(!sidebarOpen)} className="p-2 text-foreground/70">
+          <Package className="w-5 h-5" />
+        </button>
+        <img src="/logo.jpeg" alt="Logo" className="h-8 w-auto object-contain" />
+        <button onClick={toggleTheme} className="p-2 text-foreground/70">
+          {theme === "dark" ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+        </button>
+      </div>
+
+      {/* Mobile sidebar overlay */}
+      {sidebarOpen && (
+        <div className="lg:hidden fixed inset-0 z-40">
+          <div className="absolute inset-0 bg-black/50" onClick={() => setSidebarOpen(false)} />
+          <aside className="absolute left-0 top-0 bottom-0 w-64 bg-white dark:bg-gray-900 border-r border-border flex flex-col">
+            <div className="p-4 border-b border-border">
+              <img src="/logo.jpeg" alt="Logo" className="h-12 w-auto object-contain mb-1" />
+              <p className="text-xs text-foreground/50 font-medium">Admin Panel</p>
+            </div>
+            <nav className="flex-1 p-3 space-y-1 overflow-y-auto">
+              {sidebarLinks.map((link) => {
+                const isActive =
+                  pathname === link.href ||
+                  (link.href !== "/admin" && pathname.startsWith(link.href));
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => setSidebarOpen(false)}
+                    className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                      isActive ? "bg-primary text-white" : "text-foreground/70 hover:bg-muted"
+                    }`}
+                  >
+                    <link.icon className="w-5 h-5" />
+                    {link.label}
+                  </Link>
+                );
+              })}
+            </nav>
+            <div className="p-3 border-t border-border space-y-1">
+              <button onClick={handleLogout} className="flex items-center gap-2 px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors w-full">
+                <LogOut className="w-4 h-4" /> Logout
+              </button>
+              <Link href="/" className="flex items-center gap-2 px-3 py-2 text-sm text-foreground/60 hover:text-primary rounded-lg hover:bg-muted transition-colors">
+                <ArrowLeft className="w-4 h-4" /> Back to Store
+              </Link>
+            </div>
+          </aside>
+        </div>
+      )}
+
       {/* Main Content */}
-      <main className="flex-1 p-6 sm:p-8 overflow-auto">{children}</main>
+      <main className="flex-1 p-6 sm:p-8 overflow-auto lg:p-8 max-lg:pt-20 max-lg:pb-6">{children}</main>
     </div>
   );
 }

@@ -84,7 +84,7 @@ export default function AboutPage() {
             ].map((item) => (
               <div
                 key={item.title}
-                className="bg-white p-6 rounded-xl border border-border"
+                className="bg-white dark:bg-gray-900 p-6 rounded-xl border border-border"
               >
                 <h3 className="font-semibold text-lg text-foreground">{item.title}</h3>
                 <p className="mt-3 text-foreground/70 text-sm leading-relaxed">
@@ -116,7 +116,7 @@ export default function AboutPage() {
                 href={item.link || undefined}
                 target={item.link ? "_blank" : undefined}
                 rel={item.link ? "noopener noreferrer" : undefined}
-                className="text-center p-6 bg-white rounded-xl border border-border hover:shadow-md hover:border-primary/30 transition-all cursor-pointer block"
+                className="text-center p-6 bg-white dark:bg-gray-900 rounded-xl border border-border hover:shadow-md hover:border-primary/30 transition-all cursor-pointer block"
               >
                 <item.icon className="w-8 h-8 mx-auto text-primary" />
                 <h3 className="font-semibold mt-3">{item.label}</h3>

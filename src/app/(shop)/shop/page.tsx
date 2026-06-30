@@ -95,7 +95,7 @@ function ShopContent() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search fabrics..."
-              className="w-full pl-10 pr-4 py-3 border border-border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+              className="w-full pl-10 pr-4 py-3 border border-border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-white dark:bg-gray-800 text-foreground"
             />
             {search && (
               <button
@@ -117,7 +117,7 @@ function ShopContent() {
               className={`flex-shrink-0 flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-200 border ${
                 category === cat.value
                   ? "bg-primary text-white border-primary shadow-md shadow-primary/20"
-                  : "bg-white text-foreground/70 border-border hover:border-primary/30 hover:text-primary"
+                  : "bg-white dark:bg-gray-800 text-foreground/70 border-border hover:border-primary/30 hover:text-primary"
               }`}
             >
               <span className="text-base">{cat.emoji}</span>
@@ -141,7 +141,7 @@ function ShopContent() {
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="appearance-none pl-3 pr-8 py-2 border border-border rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                className="appearance-none pl-3 pr-8 py-2 border border-border rounded-xl text-sm bg-white dark:bg-gray-800 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
               >
                 {SORT_OPTIONS.map((opt) => (
                   <option key={opt.value} value={opt.value}>
@@ -167,7 +167,7 @@ function ShopContent() {
             {[...Array(8)].map((_, i) => (
               <div
                 key={i}
-                className="bg-white rounded-2xl border border-border overflow-hidden animate-pulse"
+                className="bg-white dark:bg-gray-900 rounded-2xl border border-border overflow-hidden animate-pulse"
               >
                 <div className="aspect-[4/5] bg-muted" />
                 <div className="p-4 space-y-3">

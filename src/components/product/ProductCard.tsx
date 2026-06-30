@@ -19,7 +19,7 @@ export default function ProductCard({ product }: ProductCardProps) {
 
   return (
     <Link href={`/product/${product.id}`} className="group block">
-      <div className="bg-white rounded-2xl border border-border overflow-hidden hover:shadow-xl hover:shadow-primary/5 transition-all duration-500 hover:-translate-y-1">
+      <div className="bg-white dark:bg-gray-900 rounded-2xl border border-border overflow-hidden hover:shadow-xl hover:shadow-primary/5 transition-all duration-500 hover:-translate-y-1">
         {/* Image */}
         <div className="relative aspect-[4/5] bg-gradient-to-br from-muted to-muted/50 overflow-hidden">
           {product.images[0] ? (
@@ -44,12 +44,12 @@ export default function ProductCard({ product }: ProductCardProps) {
           <div className="absolute bottom-3 left-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-300">
             <button
               onClick={handleAddToCart}
-              className="flex-1 bg-white text-primary-dark text-xs font-semibold py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 hover:bg-accent hover:text-white transition-colors"
+              className="flex-1 bg-white dark:bg-gray-800 text-primary-dark dark:text-white text-xs font-semibold py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 hover:bg-accent hover:text-white transition-colors"
             >
               <ShoppingBag className="w-3.5 h-3.5" />
               Add to Cart
             </button>
-            <div className="bg-white text-primary-dark w-10 h-10 rounded-xl flex items-center justify-center hover:bg-accent hover:text-white transition-colors">
+            <div className="bg-white dark:bg-gray-800 text-primary-dark dark:text-white w-10 h-10 rounded-xl flex items-center justify-center hover:bg-accent hover:text-white transition-colors">
               <Eye className="w-4 h-4" />
             </div>
           </div>

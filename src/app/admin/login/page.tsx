@@ -17,7 +17,6 @@ export default function AdminLoginPage() {
     setLoading(true);
     setError("");
 
-    // Check stored password or default
     const storedPassword = localStorage.getItem("admin_password") || "abafabrics2024";
     if (username === "admin" && password === storedPassword) {
       localStorage.setItem("admin_auth", "true");
@@ -31,7 +30,7 @@ export default function AdminLoginPage() {
   return (
     <div className="min-h-screen bg-muted/30 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
-        <div className="bg-white rounded-2xl border border-border shadow-sm p-8">
+        <div className="bg-white dark:bg-gray-900 rounded-2xl border border-border shadow-sm p-8">
           <div className="text-center mb-8">
             <img
               src="/logo.jpeg"
@@ -46,7 +45,7 @@ export default function AdminLoginPage() {
 
           <form onSubmit={handleLogin} className="space-y-5">
             {error && (
-              <div className="bg-red-50 text-red-600 text-sm px-4 py-3 rounded-xl border border-red-200">
+              <div className="bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 text-sm px-4 py-3 rounded-xl border border-red-200 dark:border-red-800">
                 {error}
               </div>
             )}
@@ -63,7 +62,7 @@ export default function AdminLoginPage() {
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   placeholder="admin"
-                  className="w-full pl-10 pr-4 py-3 border border-border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                  className="w-full pl-10 pr-4 py-3 border border-border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all bg-white dark:bg-gray-800 text-foreground"
                 />
               </div>
             </div>
@@ -80,7 +79,7 @@ export default function AdminLoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter password"
-                  className="w-full pl-10 pr-12 py-3 border border-border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                  className="w-full pl-10 pr-12 py-3 border border-border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all bg-white dark:bg-gray-800 text-foreground"
                 />
                 <button
                   type="button"

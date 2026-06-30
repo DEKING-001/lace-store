@@ -142,8 +142,8 @@ export default function CheckoutPage() {
   if (success) {
     return (
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
-        <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-          <Check className="w-8 h-8 text-green-600" />
+        <div className="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+          <Check className="w-8 h-8 text-green-600 dark:text-green-400" />
         </div>
         <h2 className="text-3xl font-bold text-foreground">Order Placed!</h2>
         <p className="mt-2 text-foreground/60">
@@ -156,7 +156,7 @@ export default function CheckoutPage() {
             <p className="text-sm text-foreground/70">
               Please transfer <strong>₦{total.toLocaleString()}</strong> to:
             </p>
-            <div className="mt-3 p-3 bg-white rounded-lg border border-border">
+            <div className="mt-3 p-3 bg-white dark:bg-gray-800 rounded-lg border border-border">
               <p className="text-sm"><strong>Bank:</strong> {bankInfo.bank_name || "Not set"}</p>
               <p className="text-sm"><strong>Account:</strong> {bankInfo.bank_account || "Not set"}</p>
               <p className="text-sm"><strong>Name:</strong> {bankInfo.bank_account_name || "Not set"}</p>
@@ -168,8 +168,8 @@ export default function CheckoutPage() {
         )}
 
         {form.paymentMethod === "card" && (
-          <div className="mt-6 p-6 bg-green-50 rounded-xl max-w-md mx-auto">
-            <p className="text-sm text-green-700">
+          <div className="mt-6 p-6 bg-green-50 dark:bg-green-900/20 rounded-xl max-w-md mx-auto">
+            <p className="text-sm text-green-700 dark:text-green-400">
               Payment confirmed! Your order is being processed.
             </p>
           </div>
@@ -189,7 +189,7 @@ export default function CheckoutPage() {
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-6">
-            <div className="bg-white rounded-xl border border-border p-6">
+            <div className="bg-white dark:bg-gray-900 rounded-xl border border-border p-6">
               <h2 className="text-lg font-semibold text-foreground mb-4">Contact Information</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
@@ -199,7 +199,7 @@ export default function CheckoutPage() {
                     required
                     value={form.name}
                     onChange={(e) => setForm({ ...form, name: e.target.value })}
-                    className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                    className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-800 text-foreground"
                   />
                 </div>
                 <div>
@@ -209,7 +209,7 @@ export default function CheckoutPage() {
                     required
                     value={form.email}
                     onChange={(e) => setForm({ ...form, email: e.target.value })}
-                    className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                    className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-800 text-foreground"
                   />
                 </div>
                 <div className="sm:col-span-2">
@@ -219,13 +219,13 @@ export default function CheckoutPage() {
                     required
                     value={form.phone}
                     onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                    className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                    className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-800 text-foreground"
                   />
                 </div>
               </div>
             </div>
 
-            <div className="bg-white rounded-xl border border-border p-6">
+            <div className="bg-white dark:bg-gray-900 rounded-xl border border-border p-6">
               <h2 className="text-lg font-semibold text-foreground mb-4">Delivery Address</h2>
               <div className="space-y-4">
                 <div>
@@ -235,7 +235,7 @@ export default function CheckoutPage() {
                     required
                     value={form.address}
                     onChange={(e) => setForm({ ...form, address: e.target.value })}
-                    className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                    className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-800 text-foreground"
                   />
                 </div>
                 <div className="grid grid-cols-2 gap-4">
@@ -246,7 +246,7 @@ export default function CheckoutPage() {
                       required
                       value={form.city}
                       onChange={(e) => setForm({ ...form, city: e.target.value })}
-                      className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                      className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-800 text-foreground"
                     />
                   </div>
                   <div>
@@ -256,14 +256,14 @@ export default function CheckoutPage() {
                       required
                       value={form.state}
                       onChange={(e) => setForm({ ...form, state: e.target.value })}
-                      className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                      className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-800 text-foreground"
                     />
                   </div>
                 </div>
               </div>
             </div>
 
-            <div className="bg-white rounded-xl border border-border p-6">
+            <div className="bg-white dark:bg-gray-900 rounded-xl border border-border p-6">
               <h2 className="text-lg font-semibold text-foreground mb-4">Payment Method</h2>
               <div className="space-y-3">
                 <label
@@ -314,7 +314,7 @@ export default function CheckoutPage() {
           </div>
 
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-xl border border-border p-6 sticky top-24">
+            <div className="bg-white dark:bg-gray-900 rounded-xl border border-border p-6 sticky top-24">
               <h2 className="text-xl font-bold text-foreground mb-4">Your Order</h2>
 
               <div className="space-y-3 mb-4">
