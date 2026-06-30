@@ -14,6 +14,8 @@ import {
   Boxes,
   ArrowLeft,
   LogOut,
+  PanelLeftClose,
+  PanelLeftOpen,
 } from "lucide-react";
 
 const sidebarLinks = [
@@ -36,6 +38,7 @@ export default function AdminLayout({
   const router = useRouter();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
 
   const isLoginPage = pathname === "/admin/login";
 
@@ -51,8 +54,20 @@ export default function AdminLayout({
     } else {
       router.push("/admin/login");
     }
+
+    const saved = localStorage.getItem("admin_sidebar");
+    if (saved !== null) {
+      setSidebarOpen(saved === "true");
+    }
+
     setLoading(false);
   }, [router, isLoginPage]);
+
+  const toggleSidebar = () => {
+    const next = !sidebarOpen;
+    setSidebarOpen(next);
+    localStorage.setItem("admin_sidebar", String(next));
+  };
 
   const handleLogout = () => {
     localStorage.removeItem("admin_auth");
@@ -78,7 +93,11 @@ export default function AdminLayout({
   return (
     <div className="flex min-h-screen bg-muted/30">
       {/* Sidebar */}
-      <aside className="w-64 bg-white border-r border-border flex flex-col">
+      <aside
+        className={`bg-white border-r border-border flex flex-col flex-shrink-0 transition-all duration-300 ${
+          sidebarOpen ? "w-64" : "w-0 overflow-hidden"
+        }`}
+      >
         <div className="p-4 border-b border-border">
           <img
             src="/logo.jpeg"
@@ -130,7 +149,24 @@ export default function AdminLayout({
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 p-6 sm:p-8 overflow-auto">{children}</main>
+      <div className="flex-1 flex flex-col min-w-0">
+        {/* Top bar with toggle */}
+        <div className="bg-white border-b border-border px-4 py-2 flex items-center">
+          <button
+            onClick={toggleSidebar}
+            className="p-2 text-foreground/60 hover:text-primary hover:bg-muted rounded-lg transition-colors"
+            title={sidebarOpen ? "Collapse sidebar" : "Expand sidebar"}
+          >
+            {sidebarOpen ? (
+              <PanelLeftClose className="w-5 h-5" />
+            ) : (
+              <PanelLeftOpen className="w-5 h-5" />
+            )}
+          </button>
+        </div>
+
+        <main className="flex-1 p-6 sm:p-8 overflow-auto">{children}</main>
+      </div>
     </div>
   );
 }
