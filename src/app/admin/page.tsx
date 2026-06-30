@@ -38,6 +38,7 @@ export default function AdminDashboard() {
     deliveredOrders: orders.filter((o) => o.order_status === "delivered").length,
   };
 
+  // Generate last 7 days data for chart
   const getChartData = () => {
     const days = [];
     for (let i = 6; i >= 0; i--) {
@@ -63,29 +64,29 @@ export default function AdminDashboard() {
       label: "Total Orders",
       value: stats.totalOrders,
       icon: ShoppingCart,
-      color: "bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400",
-      iconBg: "bg-blue-100 dark:bg-blue-900/30",
+      color: "bg-blue-50 text-blue-600",
+      iconBg: "bg-blue-100",
     },
     {
       label: "Pending Orders",
       value: stats.pendingOrders,
       icon: Package,
-      color: "bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400",
-      iconBg: "bg-amber-100 dark:bg-amber-900/30",
+      color: "bg-amber-50 text-amber-600",
+      iconBg: "bg-amber-100",
     },
     {
       label: "Revenue",
       value: `₦${stats.totalRevenue.toLocaleString()}`,
       icon: DollarSign,
-      color: "bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400",
-      iconBg: "bg-green-100 dark:bg-green-900/30",
+      color: "bg-green-50 text-green-600",
+      iconBg: "bg-green-100",
     },
     {
       label: "Delivered",
       value: stats.deliveredOrders,
       icon: TrendingUp,
-      color: "bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400",
-      iconBg: "bg-purple-100 dark:bg-purple-900/30",
+      color: "bg-purple-50 text-purple-600",
+      iconBg: "bg-purple-100",
     },
   ];
 
@@ -105,7 +106,7 @@ export default function AdminDashboard() {
         {statCards.map((stat) => (
           <div
             key={stat.label}
-            className="bg-white dark:bg-gray-900 rounded-2xl border border-border p-5 hover:shadow-md transition-shadow"
+            className="bg-white rounded-2xl border border-border p-5 hover:shadow-md transition-shadow"
           >
             <div className="flex items-center justify-between">
               <div>
@@ -125,7 +126,7 @@ export default function AdminDashboard() {
       </div>
 
       {/* Revenue Chart */}
-      <div className="bg-white dark:bg-gray-900 rounded-2xl border border-border p-6 mb-8">
+      <div className="bg-white rounded-2xl border border-border p-6 mb-8">
         <div className="flex items-center justify-between mb-6">
           <div>
             <h2 className="font-bold text-foreground">Revenue Overview</h2>
@@ -133,7 +134,7 @@ export default function AdminDashboard() {
               Last 7 days performance
             </p>
           </div>
-          <div className="flex items-center gap-1.5 text-sm text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20 px-3 py-1 rounded-full">
+          <div className="flex items-center gap-1.5 text-sm text-green-600 bg-green-50 px-3 py-1 rounded-full">
             <ArrowUpRight className="w-3.5 h-3.5" />
             <span className="font-medium">This Week</span>
           </div>
@@ -169,7 +170,7 @@ export default function AdminDashboard() {
       </div>
 
       {/* Recent Orders */}
-      <div className="bg-white dark:bg-gray-900 rounded-2xl border border-border overflow-hidden">
+      <div className="bg-white rounded-2xl border border-border overflow-hidden">
         <div className="p-5 border-b border-border">
           <h2 className="font-bold text-foreground">Recent Orders</h2>
         </div>
@@ -197,7 +198,10 @@ export default function AdminDashboard() {
             <tbody>
               {loading ? (
                 <tr>
-                  <td colSpan={5} className="px-5 py-12 text-center text-foreground/40">
+                  <td
+                    colSpan={5}
+                    className="px-5 py-12 text-center text-foreground/40"
+                  >
                     Loading...
                   </td>
                 </tr>
@@ -208,7 +212,9 @@ export default function AdminDashboard() {
                       <div className="w-16 h-16 bg-muted rounded-2xl flex items-center justify-center mb-4">
                         <ShoppingCart className="w-7 h-7 text-foreground/20" />
                       </div>
-                      <p className="font-semibold text-foreground/60">No orders yet</p>
+                      <p className="font-semibold text-foreground/60">
+                        No orders yet
+                      </p>
                       <p className="text-sm text-foreground/40 mt-1">
                         Orders will appear here once customers start purchasing.
                       </p>
@@ -221,33 +227,43 @@ export default function AdminDashboard() {
                     key={order.id}
                     className="border-b border-border last:border-0 hover:bg-muted/20 transition-colors"
                   >
-                    <td className="px-5 py-4 font-mono text-xs font-medium">{order.id}</td>
+                    <td className="px-5 py-4 font-mono text-xs font-medium">
+                      {order.id}
+                    </td>
                     <td className="px-5 py-4">
                       <div>
                         <p className="font-medium">{order.customer_name}</p>
-                        <p className="text-xs text-foreground/40">{order.customer_email}</p>
+                        <p className="text-xs text-foreground/40">
+                          {order.customer_email}
+                        </p>
                       </div>
                     </td>
-                    <td className="px-5 py-4 font-semibold">₦{order.total.toLocaleString()}</td>
+                    <td className="px-5 py-4 font-semibold">
+                      ₦{order.total.toLocaleString()}
+                    </td>
                     <td className="px-5 py-4">
-                      <span className={`px-2.5 py-1 rounded-full text-xs font-semibold ${
-                        order.order_status === "delivered"
-                          ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400"
-                          : order.order_status === "confirmed"
-                          ? "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400"
-                          : order.order_status === "pending"
-                          ? "bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400"
-                          : "bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400"
-                      }`}>
+                      <span
+                        className={`px-2.5 py-1 rounded-full text-xs font-semibold ${
+                          order.order_status === "delivered"
+                            ? "bg-green-100 text-green-700"
+                            : order.order_status === "confirmed"
+                            ? "bg-blue-100 text-blue-700"
+                            : order.order_status === "pending"
+                            ? "bg-amber-100 text-amber-700"
+                            : "bg-red-100 text-red-700"
+                        }`}
+                      >
                         {order.order_status}
                       </span>
                     </td>
                     <td className="px-5 py-4">
-                      <span className={`px-2.5 py-1 rounded-full text-xs font-semibold ${
-                        order.payment_status === "paid"
-                          ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400"
-                          : "bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400"
-                      }`}>
+                      <span
+                        className={`px-2.5 py-1 rounded-full text-xs font-semibold ${
+                          order.payment_status === "paid"
+                            ? "bg-green-100 text-green-700"
+                            : "bg-amber-100 text-amber-700"
+                        }`}
+                      >
                         {order.payment_status}
                       </span>
                     </td>

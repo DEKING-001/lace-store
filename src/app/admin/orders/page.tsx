@@ -46,7 +46,7 @@ export default function AdminOrdersPage() {
         const phone = order.customer_phone.replace(/^0/, "234");
         const items = order.items?.map((i) => `${i.product_name} (${i.quantity} yd${i.quantity > 1 ? "s" : ""})`).join(", ");
         const msg = encodeURIComponent(
-          `Hi ${order.customer_name}!\n\nYour order ${order.id} has been shipped!\n\nItems: ${items}\nTotal: ₦${order.total.toLocaleString()}\n\nTrack your order: https://lace-store.vercel.app/track\n\nThank you for shopping with Aba Premium Net Fabrics!`
+          `Hi ${order.customer_name}!\n\nYour order ${order.id} has been shipped!\n\nItems: ${items}\nTotal: ₦${order.total.toLocaleString()}\n\nTrack your order: https://abafabrics.vercel.app/track\n\nThank you for shopping with Aba Premium Net Fabrics!`
         );
         window.open(`https://wa.me/${phone}?text=${msg}`, "_blank");
       }
@@ -61,7 +61,7 @@ export default function AdminOrdersPage() {
     <div>
       <h1 className="text-2xl font-bold text-foreground mb-6">Orders</h1>
 
-      <div className="bg-white dark:bg-gray-900 rounded-xl border border-border overflow-hidden">
+      <div className="bg-white rounded-xl border border-border overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
@@ -77,9 +77,17 @@ export default function AdminOrdersPage() {
             </thead>
             <tbody>
               {loading ? (
-                <tr><td colSpan={7} className="p-8 text-center text-foreground/50">Loading...</td></tr>
+                <tr>
+                  <td colSpan={7} className="p-8 text-center text-foreground/50">
+                    Loading...
+                  </td>
+                </tr>
               ) : orders.length === 0 ? (
-                <tr><td colSpan={7} className="p-8 text-center text-foreground/50">No orders yet.</td></tr>
+                <tr>
+                  <td colSpan={7} className="p-8 text-center text-foreground/50">
+                    No orders yet.
+                  </td>
+                </tr>
               ) : (
                 orders.map((order) => (
                   <tr key={order.id} className="border-b border-border last:border-0 hover:bg-muted/20">
@@ -92,33 +100,62 @@ export default function AdminOrdersPage() {
                     </td>
                     <td className="p-3">
                       {order.items?.map((item: { product_name: string; quantity: number; price: number }, i: number) => (
-                        <p key={i} className="text-xs">{item.product_name} — {item.quantity} yd{item.quantity > 1 ? "s" : ""}</p>
+                        <p key={i} className="text-xs">
+                          {item.product_name} — {item.quantity} yd{item.quantity > 1 ? "s" : ""}
+                        </p>
                       ))}
                     </td>
                     <td className="p-3 font-medium">₦{order.total.toLocaleString()}</td>
                     <td className="p-3">
-                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        order.payment_status === "paid" ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400" : "bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400"
-                      }`}>{order.payment_status}</span>
+                      <span
+                        className={`px-2 py-1 rounded-full text-xs font-medium ${
+                          order.payment_status === "paid"
+                            ? "bg-green-100 text-green-700"
+                            : "bg-amber-100 text-amber-700"
+                        }`}
+                      >
+                        {order.payment_status}
+                      </span>
                     </td>
                     <td className="p-3">
-                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        order.order_status === "delivered" ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400"
-                        : order.order_status === "confirmed" ? "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400"
-                        : order.order_status === "shipped" ? "bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400"
-                        : order.order_status === "pending" ? "bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400"
-                        : "bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400"
-                      }`}>{order.order_status}</span>
+                      <span
+                        className={`px-2 py-1 rounded-full text-xs font-medium ${
+                          order.order_status === "delivered"
+                            ? "bg-green-100 text-green-700"
+                            : order.order_status === "confirmed"
+                            ? "bg-blue-100 text-blue-700"
+                            : order.order_status === "shipped"
+                            ? "bg-purple-100 text-purple-700"
+                            : order.order_status === "pending"
+                            ? "bg-amber-100 text-amber-700"
+                            : "bg-red-100 text-red-700"
+                        }`}
+                      >
+                        {order.order_status}
+                      </span>
                     </td>
                     <td className="p-3">
                       <div className="flex items-center justify-end gap-2">
                         {order.customer_phone && order.order_status !== "shipped" && order.order_status !== "delivered" && (
-                          <button onClick={() => updateOrderStatus(order.id, "shipped", order)} className="p-1.5 text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20 rounded-lg transition-colors" title="Ship & notify via WhatsApp">
+                          <button
+                            onClick={() => updateOrderStatus(order.id, "shipped", order)}
+                            className="p-1.5 text-green-600 hover:bg-green-50 rounded-lg transition-colors"
+                            title="Ship & notify via WhatsApp"
+                          >
                             <MessageCircle className="w-4 h-4" />
                           </button>
                         )}
-                        <select value={order.order_status} onChange={(e) => updateOrderStatus(order.id, e.target.value, order)} disabled={updatingId === order.id} className="text-xs border border-border rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-800 text-foreground">
-                          {STATUS_OPTIONS.map((status) => (<option key={status} value={status}>{status}</option>))}
+                        <select
+                          value={order.order_status}
+                          onChange={(e) => updateOrderStatus(order.id, e.target.value, order)}
+                          disabled={updatingId === order.id}
+                          className="text-xs border border-border rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-primary"
+                        >
+                          {STATUS_OPTIONS.map((status) => (
+                            <option key={status} value={status}>
+                              {status}
+                            </option>
+                          ))}
                         </select>
                       </div>
                     </td>

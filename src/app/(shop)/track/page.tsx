@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Search, Package, Check, Truck, Clock } from "lucide-react";
+import { Search, Package, Check, Truck, Clock, X } from "lucide-react";
 
 interface Order {
   id: string;
@@ -83,7 +83,7 @@ export default function TrackPage() {
                 value={orderId}
                 onChange={(e) => setOrderId(e.target.value)}
                 placeholder="Enter your order ID (e.g. ORD-MQU704JZ)"
-                className="flex-1 px-4 py-3 border border-border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-white dark:bg-gray-800 text-foreground"
+                className="flex-1 px-4 py-3 border border-border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
               />
               <button
                 type="submit"
@@ -97,7 +97,7 @@ export default function TrackPage() {
           </form>
 
           {error && (
-            <div className="bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400 text-sm px-4 py-3 rounded-xl border border-red-200 dark:border-red-800 mb-6">
+            <div className="bg-red-50 text-red-700 text-sm px-4 py-3 rounded-xl border border-red-200 mb-6">
               {error}
             </div>
           )}
@@ -105,13 +105,13 @@ export default function TrackPage() {
           {order && (
             <div className="space-y-6">
               {/* Order Info */}
-              <div className="bg-white dark:bg-gray-900 p-6 rounded-2xl border border-border">
+              <div className="bg-white p-6 rounded-2xl border border-border">
                 <div className="flex items-center justify-between mb-4">
                   <h2 className="font-bold text-foreground">{order.id}</h2>
                   <span className={`text-xs font-semibold px-3 py-1 rounded-full ${
                     order.payment_status === "paid"
-                      ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400"
-                      : "bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400"
+                      ? "bg-green-100 text-green-700"
+                      : "bg-yellow-100 text-yellow-700"
                   }`}>
                     {order.payment_status === "paid" ? "Paid" : "Payment Pending"}
                   </span>
@@ -122,7 +122,7 @@ export default function TrackPage() {
               </div>
 
               {/* Progress Steps */}
-              <div className="bg-white dark:bg-gray-900 p-6 rounded-2xl border border-border">
+              <div className="bg-white p-6 rounded-2xl border border-border">
                 <h3 className="font-bold text-foreground mb-6">Order Status</h3>
                 <div className="space-y-4">
                   {STATUS_STEPS.map((step, index) => {
@@ -162,7 +162,7 @@ export default function TrackPage() {
               </div>
 
               {/* Items */}
-              <div className="bg-white dark:bg-gray-900 p-6 rounded-2xl border border-border">
+              <div className="bg-white p-6 rounded-2xl border border-border">
                 <h3 className="font-bold text-foreground mb-4">Items Ordered</h3>
                 <div className="space-y-3">
                   {order.items?.map((item: { product_name: string; quantity: number; price: number }, i: number) => (

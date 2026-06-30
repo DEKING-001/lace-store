@@ -77,7 +77,7 @@ export default function ContactPage() {
                 href={item.link}
                 target={item.link.startsWith("http") ? "_blank" : undefined}
                 rel={item.link.startsWith("http") ? "noopener noreferrer" : undefined}
-                className="bg-white dark:bg-gray-900 p-6 rounded-2xl border border-border hover:shadow-lg hover:border-accent/30 transition-all duration-300 text-center group"
+                className="bg-white p-6 rounded-2xl border border-border hover:shadow-lg hover:border-accent/30 transition-all duration-300 text-center group"
               >
                 <div className="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:bg-primary/20 transition-colors">
                   <item.icon className="w-6 h-6 text-primary" />
@@ -106,7 +106,7 @@ export default function ContactPage() {
             </p>
           </div>
 
-          <form onSubmit={handleSubmit} className="bg-white dark:bg-gray-900 rounded-2xl border border-border p-6 sm:p-8 space-y-5">
+          <form onSubmit={handleSubmit} className="bg-white rounded-2xl border border-border p-6 sm:p-8 space-y-5">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
               <div>
                 <label className="block text-sm font-semibold text-foreground mb-2">
@@ -118,7 +118,7 @@ export default function ContactPage() {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="John Doe"
-                  className="w-full px-4 py-3 border border-border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all bg-white dark:bg-gray-800 text-foreground"
+                  className="w-full px-4 py-3 border border-border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
                 />
               </div>
               <div>
@@ -131,7 +131,7 @@ export default function ContactPage() {
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   placeholder="08012345678"
-                  className="w-full px-4 py-3 border border-border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all bg-white dark:bg-gray-800 text-foreground"
+                  className="w-full px-4 py-3 border border-border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
                 />
               </div>
             </div>
@@ -145,7 +145,7 @@ export default function ContactPage() {
                 value={subject}
                 onChange={(e) => setSubject(e.target.value)}
                 placeholder="How can we help?"
-                className="w-full px-4 py-3 border border-border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all bg-white dark:bg-gray-800 text-foreground"
+                className="w-full px-4 py-3 border border-border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
               />
             </div>
             <div>
@@ -158,7 +158,7 @@ export default function ContactPage() {
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 placeholder="Tell us what you need..."
-                className="w-full px-4 py-3 border border-border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all resize-none bg-white dark:bg-gray-800 text-foreground"
+                className="w-full px-4 py-3 border border-border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all resize-none"
               />
             </div>
             <button

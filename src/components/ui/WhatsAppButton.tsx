@@ -20,7 +20,7 @@ export default function WhatsAppButton() {
   return (
     <div className="fixed bottom-6 right-6 z-50">
       {open && (
-        <div className="mb-4 bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border border-border w-80 overflow-hidden">
+        <div className="mb-4 bg-white rounded-2xl shadow-2xl border border-border w-80 overflow-hidden">
           <div className="bg-[#075E54] text-white p-4 flex items-center justify-between">
             <div>
               <p className="font-bold text-sm">Aba Premium Net Fabrics</p>
@@ -30,8 +30,8 @@ export default function WhatsAppButton() {
               <X className="w-5 h-5" />
             </button>
           </div>
-          <div className="p-4 bg-[#ECE5DD] dark:bg-gray-800">
-            <div className="bg-white dark:bg-gray-700 p-3 rounded-lg shadow-sm text-sm text-foreground/80">
+          <div className="p-4 bg-[#ECE5DD]">
+            <div className="bg-white p-3 rounded-lg shadow-sm text-sm text-foreground/80">
               Hello! How can we help you today?
             </div>
           </div>
@@ -43,7 +43,7 @@ export default function WhatsAppButton() {
                 onChange={(e) => setMessage(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && handleSend()}
                 placeholder="Type a message..."
-                className="flex-1 px-3 py-2 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500/20 bg-white dark:bg-gray-800 text-foreground"
+                className="flex-1 px-3 py-2 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500/20"
               />
               <button
                 onClick={handleSend}

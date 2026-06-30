@@ -35,7 +35,7 @@ export default function CartPage() {
           {items.map((item) => (
             <div
               key={`${item.product.id}-${item.selectedColor}`}
-              className="flex gap-4 p-4 bg-white dark:bg-gray-900 rounded-xl border border-border"
+              className="flex gap-4 p-4 bg-white rounded-xl border border-border"
             >
               {/* Image */}
               <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-lg bg-muted overflow-hidden flex-shrink-0">
@@ -114,7 +114,7 @@ export default function CartPage() {
 
         {/* Order Summary */}
         <div className="lg:col-span-1">
-          <div className="bg-white dark:bg-gray-900 rounded-xl border border-border p-6 sticky top-24">
+          <div className="bg-white rounded-xl border border-border p-6 sticky top-24">
             <h2 className="text-xl font-bold text-foreground mb-4">Order Summary</h2>
 
             <div className="space-y-3 text-sm">

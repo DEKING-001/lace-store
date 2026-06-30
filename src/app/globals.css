@@ -11,13 +11,6 @@
   --color-border: #e8e0d8;
 }
 
-.dark {
-  --color-background: #111827;
-  --color-foreground: #f3f4f6;
-  --color-muted: #1f2937;
-  --color-border: #374151;
-}
-
 body {
   background: var(--color-background);
   color: var(--color-foreground);

@@ -133,13 +133,13 @@ export default function ProductPage() {
               <>
                 <button
                   onClick={prevImage}
-                  className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg hover:bg-white dark:hover:bg-gray-700 transition-colors"
+                  className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg hover:bg-white transition-colors"
                 >
                   <ChevronLeft className="w-5 h-5" />
                 </button>
                 <button
                   onClick={nextImage}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg hover:bg-white dark:hover:bg-gray-700 transition-colors"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg hover:bg-white transition-colors"
                 >
                   <ChevronRight className="w-5 h-5" />
                 </button>
@@ -259,10 +259,10 @@ export default function ProductPage() {
         <h2 className="text-2xl font-bold text-foreground mb-8">Customer Reviews</h2>
 
         {/* Review Form */}
-        <div className="bg-white dark:bg-gray-900 p-6 rounded-2xl border border-border mb-8 max-w-lg">
+        <div className="bg-white p-6 rounded-2xl border border-border mb-8 max-w-lg">
           <h3 className="font-semibold text-foreground mb-4">Leave a Review</h3>
           {reviewSubmitted ? (
-            <div className="bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 text-sm px-4 py-3 rounded-xl border border-green-200 dark:border-green-800">
+            <div className="bg-green-50 text-green-700 text-sm px-4 py-3 rounded-xl border border-green-200">
               Thank you! Your review has been submitted.
             </div>
           ) : (
@@ -273,7 +273,7 @@ export default function ProductPage() {
                   type="text"
                   value={reviewForm.name}
                   onChange={(e) => setReviewForm({ ...reviewForm, name: e.target.value })}
-                  className="w-full px-3 py-2 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-800 text-foreground"
+                  className="w-full px-3 py-2 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary"
                   placeholder="John Doe"
                 />
               </div>
@@ -303,7 +303,7 @@ export default function ProductPage() {
                   rows={3}
                   value={reviewForm.comment}
                   onChange={(e) => setReviewForm({ ...reviewForm, comment: e.target.value })}
-                  className="w-full px-3 py-2 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary resize-none bg-white dark:bg-gray-800 text-foreground"
+                  className="w-full px-3 py-2 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary resize-none"
                   placeholder="How was the fabric quality?"
                 />
               </div>
@@ -347,7 +347,7 @@ export default function ProductPage() {
         ) : (
           <div className="space-y-4 max-w-2xl">
             {reviews.map((review) => (
-              <div key={review.id} className="bg-white dark:bg-gray-900 p-5 rounded-2xl border border-border">
+              <div key={review.id} className="bg-white p-5 rounded-2xl border border-border">
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-3">
                     <div className="w-9 h-9 bg-primary/10 rounded-full flex items-center justify-center">
