@@ -9,7 +9,7 @@ import ProductCard from "@/components/product/ProductCard";
 const CATEGORIES: { value: MaterialType | "all"; label: string; emoji: string }[] = [
   { value: "all", label: "All Fabrics", emoji: " " },
   { value: "fabric", label: "Fabric", emoji: " " },
-  { value: "beaded lace", label: "Beaded Lace", emoji: "✨" },
+  { value: "beaded lace", label: "Beaded Lace", emoji: "" },
   { value: "cord lace", label: "Cord Lace", emoji: " " },
   { value: "senator material", label: "Senator", emoji: " " },
   { value: "plain", label: "Plain", emoji: " " },

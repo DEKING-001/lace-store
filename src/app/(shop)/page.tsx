@@ -96,7 +96,7 @@ export default function HomePage() {
           <div className="grid grid-cols-2 md:grid-cols-3 gap-5">
             {[
               { name: "Fabric", emoji: " ", slug: "fabric", desc: "Damask & more" },
-              { name: "Beaded Lace", emoji: "✨", slug: "beaded lace", desc: "Luxury & velvet" },
+              { name: "Beaded Lace", emoji: "", slug: "beaded lace", desc: "Luxury & velvet" },
               { name: "Senator", emoji: " ", slug: "senator material", desc: "Jonkoso & south" },
               { name: "Plain", emoji: " ", slug: "plain", desc: "Mikado & basics" },
               { name: "Cord Lace", emoji: " ", slug: "cord lace", desc: "Classic styles" },
