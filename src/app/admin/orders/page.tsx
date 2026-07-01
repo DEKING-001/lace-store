@@ -1,12 +1,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { MessageCircle } from "lucide-react";
+import { MessageCircle, CheckCircle } from "lucide-react";
 import type { Order } from "@/types";
 
 const STATUS_OPTIONS = ["pending", "confirmed", "shipped", "delivered", "cancelled"] as const;
-
-const WHATSAPP_NUMBER = "2349038171393";
 
 export default function AdminOrdersPage() {
   const [orders, setOrders] = useState<Order[]>([]);
@@ -30,6 +28,36 @@ export default function AdminOrdersPage() {
     return () => clearInterval(interval);
   }, []);
 
+  const updatePaymentStatus = async (id: string, paymentStatus: string) => {
+    setUpdatingId(id);
+    try {
+      const updates: Record<string, string> = { id, payment_status: paymentStatus };
+      if (paymentStatus === "paid") {
+        updates.order_status = "confirmed";
+      }
+      await fetch("/api/orders", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updates),
+      });
+      setOrders((prev) =>
+        prev.map((o) =>
+          o.id === id
+            ? {
+                ...o,
+                payment_status: paymentStatus as Order["payment_status"],
+                order_status: paymentStatus === "paid" ? "confirmed" : o.order_status,
+              }
+            : o
+        )
+      );
+    } catch {
+      alert("Error updating payment");
+    } finally {
+      setUpdatingId(null);
+    }
+  };
+
   const updateOrderStatus = async (id: string, status: string, order: Order) => {
     setUpdatingId(id);
     try {
@@ -46,7 +74,7 @@ export default function AdminOrdersPage() {
         const phone = order.customer_phone.replace(/^0/, "234");
         const items = order.items?.map((i) => `${i.product_name} (${i.quantity} yd${i.quantity > 1 ? "s" : ""})`).join(", ");
         const msg = encodeURIComponent(
-          `Hi ${order.customer_name}!\n\nYour order ${order.id} has been shipped!\n\nItems: ${items}\nTotal: ₦${order.total.toLocaleString()}\n\nTrack your order: https://abafabrics.vercel.app/track\n\nThank you for shopping with Aba Premium Net Fabrics!`
+          `Hi ${order.customer_name}!\n\nYour order ${order.id} has been shipped!\n\nItems: ${items}\nTotal: ₦${order.total.toLocaleString()}\n\nTrack your order: https://lace-store.vercel.app/track\n\nThank you for shopping with Aba Premium Net Fabrics!`
         );
         window.open(`https://wa.me/${phone}?text=${msg}`, "_blank");
       }
@@ -107,15 +135,27 @@ export default function AdminOrdersPage() {
                     </td>
                     <td className="p-3 font-medium">₦{order.total.toLocaleString()}</td>
                     <td className="p-3">
-                      <span
-                        className={`px-2 py-1 rounded-full text-xs font-medium ${
-                          order.payment_status === "paid"
-                            ? "bg-green-100 text-green-700"
-                            : "bg-amber-100 text-amber-700"
-                        }`}
-                      >
-                        {order.payment_status}
-                      </span>
+                      <div className="flex items-center gap-2">
+                        <span
+                          className={`px-2 py-1 rounded-full text-xs font-medium ${
+                            order.payment_status === "paid"
+                              ? "bg-green-100 text-green-700"
+                              : "bg-amber-100 text-amber-700"
+                          }`}
+                        >
+                          {order.payment_status}
+                        </span>
+                        {order.payment_status === "pending" && order.payment_method === "bank_transfer" && (
+                          <button
+                            onClick={() => updatePaymentStatus(order.id, "paid")}
+                            disabled={updatingId === order.id}
+                            className="p-1 text-green-600 hover:bg-green-50 rounded-lg transition-colors"
+                            title="Mark as Paid"
+                          >
+                            <CheckCircle className="w-4 h-4" />
+                          </button>
+                        )}
+                      </div>
                     </td>
                     <td className="p-3">
                       <span
