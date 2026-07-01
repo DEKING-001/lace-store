@@ -74,7 +74,7 @@ export default function AdminOrdersPage() {
         const phone = order.customer_phone.replace(/^0/, "234");
         const items = order.items?.map((i) => `${i.product_name} (${i.quantity} yd${i.quantity > 1 ? "s" : ""})`).join(", ");
         const msg = encodeURIComponent(
-          `Hi ${order.customer_name}!\n\nYour order ${order.id} has been shipped!\n\nItems: ${items}\nTotal: ₦${order.total.toLocaleString()}\n\nTrack your order: https://lace-store.vercel.app/track\n\nThank you for shopping with Aba Premium Net Fabrics!`
+          `Hi ${order.customer_name}!\n\nYour order ${order.id} has been shipped!\n\nItems: ${items}\nTotal: ₦${order.total.toLocaleString()}\n\nTrack your order: https://lace-store.vercel.app/track?id=${order.id}\n\nThank you for shopping with Aba Premium Net Fabrics!`
         );
         window.open(`https://wa.me/${phone}?text=${msg}`, "_blank");
       }

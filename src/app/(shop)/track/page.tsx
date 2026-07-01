@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
-import { Search, Package, Check, Truck, Clock, X } from "lucide-react";
+import { useState, useEffect, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
+import { Search, Package, Check, Truck, Clock } from "lucide-react";
 
 interface Order {
   id: string;
@@ -21,24 +22,23 @@ const STATUS_STEPS = [
   { key: "delivered", label: "Delivered", icon: Package },
 ];
 
-export default function TrackPage() {
-  const [orderId, setOrderId] = useState("");
+function TrackContent() {
+  const searchParams = useSearchParams();
+  const initialId = searchParams.get("id") || "";
+
+  const [orderId, setOrderId] = useState(initialId);
   const [order, setOrder] = useState<Order | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const handleSearch = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!orderId.trim()) return;
-
+  const searchOrder = async (id: string) => {
+    if (!id.trim()) return;
     setLoading(true);
     setError("");
     setOrder(null);
-
     try {
-      const res = await fetch(`/api/orders?id=${orderId.trim()}`);
+      const res = await fetch(`/api/orders?id=${id.trim()}`);
       const data = await res.json();
-
       if (data.order) {
         setOrder(data.order);
       } else {
@@ -49,6 +49,18 @@ export default function TrackPage() {
     } finally {
       setLoading(false);
     }
+  };
+
+  useEffect(() => {
+    if (initialId) {
+      searchOrder(initialId);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const handleSearch = async (e: React.FormEvent) => {
+    e.preventDefault();
+    searchOrder(orderId);
   };
 
   const currentStep = STATUS_STEPS.findIndex((s) => s.key === order?.order_status) ?? 0;
@@ -184,5 +196,19 @@ export default function TrackPage() {
         </div>
       </section>
     </div>
+  );
+}
+
+export default function TrackPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="bg-primary-dark h-48 sm:h-64 flex items-center justify-center">
+          <div className="text-white/50">Loading...</div>
+        </div>
+      }
+    >
+      <TrackContent />
+    </Suspense>
   );
 }
