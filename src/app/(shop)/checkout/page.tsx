@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { CreditCard, Building2, Check } from "lucide-react";
+import { CreditCard, Building2, Check, Copy } from "lucide-react";
 import { useCartStore } from "@/lib/cart";
 import Button from "@/components/ui/Button";
 
@@ -25,6 +25,7 @@ export default function CheckoutPage() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [orderId, setOrderId] = useState("");
+  const [showBankDetails, setShowBankDetails] = useState(false);
   const [bankInfo, setBankInfo] = useState({
     bank_name: "",
     bank_account: "",
@@ -43,7 +44,7 @@ export default function CheckoutPage() {
     }
   }, []);
 
-  const createOrder = async (paymentRef?: string) => {
+  const createOrder = async () => {
     const res = await fetch("/api/checkout", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -58,7 +59,6 @@ export default function CheckoutPage() {
         })),
         total: subtotal,
         shipping,
-        payment_ref: paymentRef,
       }),
     });
     return res.json();
@@ -119,6 +119,11 @@ export default function CheckoutPage() {
       return;
     }
 
+    // Bank transfer: show bank details first
+    setShowBankDetails(true);
+  };
+
+  const handleConfirmPayment = async () => {
     setLoading(true);
     try {
       const data = await createOrder();
@@ -132,6 +137,10 @@ export default function CheckoutPage() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const copyAccountNumber = () => {
+    navigator.clipboard.writeText(bankInfo.bank_account);
   };
 
   if (items.length === 0 && !success) {
@@ -150,34 +159,102 @@ export default function CheckoutPage() {
           Your order ID is <span className="font-mono font-semibold">{orderId}</span>
         </p>
 
-        {form.paymentMethod === "bank_transfer" && (
-          <div className="mt-6 p-6 bg-muted rounded-xl max-w-md mx-auto text-left">
-            <h3 className="font-semibold text-foreground mb-2">Bank Transfer Details</h3>
-            <p className="text-sm text-foreground/70">
-              Please transfer <strong>₦{total.toLocaleString()}</strong> to:
+        <div className="mt-6 p-6 bg-muted rounded-xl max-w-md mx-auto text-left">
+          <h3 className="font-semibold text-foreground mb-2">Next Steps</h3>
+          <p className="text-sm text-foreground/70 mb-3">
+            Please transfer <strong>₦{total.toLocaleString()}</strong> to:
+          </p>
+          <div className="p-3 bg-white rounded-lg border border-border">
+            <p className="text-sm"><strong>Bank:</strong> {bankInfo.bank_name || "Not set"}</p>
+            <p className="text-sm"><strong>Account:</strong> {bankInfo.bank_account || "Not set"}</p>
+            <p className="text-sm"><strong>Name:</strong> {bankInfo.bank_account_name || "Not set"}</p>
+            <p className="text-sm mt-2 text-foreground/60">
+              Use your order ID as reference
             </p>
-            <div className="mt-3 p-3 bg-white rounded-lg border border-border">
-              <p className="text-sm"><strong>Bank:</strong> {bankInfo.bank_name || "Not set"}</p>
-              <p className="text-sm"><strong>Account:</strong> {bankInfo.bank_account || "Not set"}</p>
-              <p className="text-sm"><strong>Name:</strong> {bankInfo.bank_account_name || "Not set"}</p>
-              <p className="text-sm mt-2 text-foreground/60">
-                Use your order ID as reference
-              </p>
-            </div>
           </div>
-        )}
+        </div>
 
-        {form.paymentMethod === "card" && (
-          <div className="mt-6 p-6 bg-green-50 rounded-xl max-w-md mx-auto">
-            <p className="text-sm text-green-700">
-              Payment confirmed! Your order is being processed.
-            </p>
-          </div>
-        )}
+        <div className="mt-6 p-4 bg-blue-50 rounded-xl max-w-md mx-auto">
+          <p className="text-sm text-blue-700">
+            Your order is <strong>pending</strong> until we confirm your payment.
+          </p>
+        </div>
 
         <Button onClick={() => router.push("/")} className="mt-8">
           Back to Home
         </Button>
+      </div>
+    );
+  }
+
+  if (showBankDetails) {
+    return (
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+        <h1 className="text-3xl font-bold text-foreground mb-8">Bank Transfer</h1>
+
+        <div className="max-w-lg mx-auto">
+          <div className="bg-white rounded-xl border border-border p-6 mb-6">
+            <h2 className="text-lg font-semibold text-foreground mb-4">Transfer to this account</h2>
+
+            <div className="bg-muted rounded-xl p-5 text-center">
+              <p className="text-sm text-foreground/60 mb-1">Amount</p>
+              <p className="text-3xl font-bold text-primary">₦{total.toLocaleString()}</p>
+            </div>
+
+            <div className="mt-5 p-4 bg-white rounded-xl border border-border">
+              <div className="space-y-3">
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-foreground/60">Bank</span>
+                  <span className="font-semibold text-foreground">{bankInfo.bank_name || "Not set"}</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-foreground/60">Account Number</span>
+                  <div className="flex items-center gap-2">
+                    <span className="font-semibold text-foreground font-mono">{bankInfo.bank_account || "Not set"}</span>
+                    {bankInfo.bank_account && (
+                      <button onClick={copyAccountNumber} className="p-1 text-primary hover:bg-primary/10 rounded transition-colors">
+                        <Copy className="w-4 h-4" />
+                      </button>
+                    )}
+                  </div>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-foreground/60">Account Name</span>
+                  <span className="font-semibold text-foreground">{bankInfo.bank_account_name || "Not set"}</span>
+                </div>
+              </div>
+            </div>
+
+            <p className="text-xs text-foreground/50 text-center mt-4">
+              Use your order ID as the transfer reference
+            </p>
+          </div>
+
+          <div className="bg-amber-50 rounded-xl p-5 mb-6">
+            <p className="text-sm text-amber-800 font-medium mb-1">Important</p>
+            <p className="text-sm text-amber-700">
+              After making the transfer, click the button below to confirm your payment. Your order will be processed immediately.
+            </p>
+          </div>
+
+          <div className="flex flex-col sm:flex-row gap-3">
+            <Button
+              size="lg"
+              className="flex-1 bg-green-600 hover:bg-green-700"
+              onClick={handleConfirmPayment}
+              disabled={loading}
+            >
+              {loading ? "Placing Order..." : "I Have Made Payment"}
+            </Button>
+            <Button
+              size="lg"
+              variant="outline"
+              onClick={() => setShowBankDetails(false)}
+            >
+              Go Back
+            </Button>
+          </div>
+        </div>
       </div>
     );
   }
@@ -354,11 +431,7 @@ export default function CheckoutPage() {
                 className="w-full mt-6"
                 disabled={loading}
               >
-                {loading
-                  ? "Processing..."
-                  : form.paymentMethod === "card"
-                  ? "Pay with Card"
-                  : "Place Order"}
+                {form.paymentMethod === "card" ? "Pay with Card" : "Pay"}
               </Button>
 
               <p className="text-xs text-foreground/50 text-center mt-3">
