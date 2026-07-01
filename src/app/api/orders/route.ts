@@ -1,11 +1,56 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
 
+const SHIP_AFTER_HOURS = 2;
+const DELIVER_AFTER_HOURS = 24;
+
+async function autoProgressOrders() {
+  if (!supabase) return;
+
+  const now = new Date();
+
+  // Auto-ship confirmed orders after SHIP_AFTER_HOURS
+  const shipCutoff = new Date(now.getTime() - SHIP_AFTER_HOURS * 60 * 60 * 1000).toISOString();
+  const { data: toShip } = await supabase
+    .from("orders")
+    .select("id")
+    .eq("order_status", "confirmed")
+    .eq("payment_status", "paid")
+    .lte("created_at", shipCutoff);
+
+  if (toShip && toShip.length > 0) {
+    const ids = toShip.map((o) => o.id);
+    await supabase
+      .from("orders")
+      .update({ order_status: "shipped" })
+      .in("id", ids);
+  }
+
+  // Auto-deliver shipped orders after DELIVER_AFTER_HOURS
+  const deliverCutoff = new Date(now.getTime() - DELIVER_AFTER_HOURS * 60 * 60 * 1000).toISOString();
+  const { data: toDeliver } = await supabase
+    .from("orders")
+    .select("id")
+    .eq("order_status", "shipped")
+    .lte("created_at", deliverCutoff);
+
+  if (toDeliver && toDeliver.length > 0) {
+    const ids = toDeliver.map((o) => o.id);
+    await supabase
+      .from("orders")
+      .update({ order_status: "delivered" })
+      .in("id", ids);
+  }
+}
+
 export async function GET(request: NextRequest) {
   const id = request.nextUrl.searchParams.get("id");
 
   if (supabase) {
     try {
+      // Run auto-progression in background (non-blocking)
+      autoProgressOrders().catch(() => {});
+
       if (id) {
         const { data, error } = await supabase
           .from("orders")
