@@ -48,7 +48,7 @@ export default function AdminLayout({
       return;
     }
 
-    const auth = localStorage.getItem("admin_auth");
+    const auth = sessionStorage.getItem("admin_auth");
     if (auth === "true") {
       setIsAuthenticated(true);
     } else {
@@ -70,7 +70,7 @@ export default function AdminLayout({
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("admin_auth");
+    sessionStorage.removeItem("admin_auth");
     router.push("/admin/login");
   };
 

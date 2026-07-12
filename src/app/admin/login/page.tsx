@@ -20,7 +20,7 @@ export default function AdminLoginPage() {
     // Check stored password or default
     const storedPassword = localStorage.getItem("admin_password") || "abafabrics2024";
     if (username === "admin" && password === storedPassword) {
-      localStorage.setItem("admin_auth", "true");
+      sessionStorage.setItem("admin_auth", "true");
       router.push("/admin");
     } else {
       setError("Invalid username or password");
