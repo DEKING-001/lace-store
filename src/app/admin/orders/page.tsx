@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { MessageCircle, CheckCircle } from "lucide-react";
+import { MessageCircle, CheckCircle, Trash2 } from "lucide-react";
 import type { Order } from "@/types";
 
 const STATUS_OPTIONS = ["pending", "confirmed", "shipped", "delivered", "cancelled"] as const;
@@ -10,6 +10,7 @@ export default function AdminOrdersPage() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
   const [updatingId, setUpdatingId] = useState<string | null>(null);
+  const [clearing, setClearing] = useState(false);
 
   useEffect(() => {
     const loadData = async () => {
@@ -58,6 +59,20 @@ export default function AdminOrdersPage() {
     }
   };
 
+  const clearAllOrders = async () => {
+    if (!confirm("Are you sure you want to delete ALL orders? This cannot be undone.")) return;
+    setClearing(true);
+    try {
+      const res = await fetch("/api/orders/clear", { method: "DELETE" });
+      if (!res.ok) throw new Error("Failed");
+      setOrders([]);
+    } catch {
+      alert("Error clearing orders");
+    } finally {
+      setClearing(false);
+    }
+  };
+
   const updateOrderStatus = async (id: string, status: string, order: Order) => {
     setUpdatingId(id);
     try {
@@ -87,7 +102,19 @@ export default function AdminOrdersPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-foreground mb-6">Orders</h1>
+      <div className="flex items-center justify-between mb-6">
+        <h1 className="text-2xl font-bold text-foreground">Orders</h1>
+        {orders.length > 0 && (
+          <button
+            onClick={clearAllOrders}
+            disabled={clearing}
+            className="flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50 transition-colors text-sm font-medium"
+          >
+            <Trash2 className="w-4 h-4" />
+            {clearing ? "Clearing..." : "Clear All Orders"}
+          </button>
+        )}
+      </div>
 
       <div className="bg-white rounded-xl border border-border overflow-hidden">
         <div className="overflow-x-auto">
